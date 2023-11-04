@@ -25,10 +25,10 @@
               Grid.Row="1"/>
         <StackPanel Orientation="Horizontal" Grid.Row="2"
                     HorizontalAlignment="Center">
-            <Button Content="|&lt;" Click="ToStartButton_Click"/>
-            <Button Content="&lt;" Click="PreviousButton_Click"/>
-            <Button Content=">" Click="NextButton_Click"/>
-            <Button Content=">|" Click="ToLastButton_Click"/>
+            <Button x:Name="toStartButton" Content="|&lt;" Click="ToStartButton_Click"/>
+            <Button x:Name="previousButton" Content="&lt;" Click="PreviousButton_Click"/>
+            <Button x:Name="nextButton" Content=">" Click="NextButton_Click"/>
+            <Button x:Name="toEndButton" Content=">|" Click="ToLastButton_Click"/>
         </StackPanel>
     </Grid>
 </Window>

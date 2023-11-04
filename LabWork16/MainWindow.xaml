@@ -12,6 +12,5 @@
         <Button Content="Task 3" Click="Task3Button_Click"/>
         <Button Content="Task 4" Click="Task4Button_Click"/>
         <Button Content="Task 5" Click="Task5Button_Click"/>
-        <Button Content="Task 6" Click="Task6Button_Click"/>
     </StackPanel>
 </Window>

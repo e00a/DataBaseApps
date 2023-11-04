@@ -37,14 +37,14 @@ namespace LabWork16
         {
             if (_products == null) return;
 
-            _totalPages = (int)Math.Ceiling(1.0 * _products.Count() / _pageSize);
+            var productsCount = _products.Count;
+            _totalPages = (int)Math.Ceiling(1.0 * productsCount / _pageSize);
 
             pageSizeTextBlock.Text = _pageSize.ToString();
             pageTextBlock.Text = _currentPage.ToString();
                         
             UpdateDataGrid(_pageSize * (_currentPage - 1), _pageSize);
 
-            var productsCount = _products.Count;
             var length = _currentPage * _pageSize;
             PrintLength(length > productsCount ? productsCount : length, productsCount);
 

@@ -24,13 +24,6 @@
         </StackPanel>
         <DataGrid x:Name="productsDataGrid"
           Grid.Row="1"/>
-        <StackPanel Orientation="Horizontal" Grid.Row="2"
-                HorizontalAlignment="Center">
-            <Button Content="|&lt;" Click="ToStartButton_Click"/>
-            <Button Content="&lt;" Click="PreviousButton_Click"/>
-            <Button Content=">" Click="NextButton_Click"/>
-            <Button Content=">|" Click="ToLastButton_Click"/>
-        </StackPanel>
         <StackPanel x:Name="buttonsStackPanel"
                     Orientation="Horizontal" 
                     Grid.Row="3"

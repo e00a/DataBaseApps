@@ -1,17 +1,7 @@
-﻿using Azure;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace LabWork16
 {
@@ -24,68 +14,73 @@ namespace LabWork16
         int _currentPage = 1;
         int _totalPages = 1;
 
+        List<Product>? _products;
+
         public Task3Window()
         {
             InitializeComponent();
+
             LoadData();
+            UpdateValues();
         }
 
-        private void LoadData()
+
+        private void UpdateValues()
         {
+            if (_products == null) return;
+
+            _totalPages = (int)Math.Ceiling(1.0 * _products.Count() / _pageSize);
+
             pageSizeTextBlock.Text = _pageSize.ToString();
             pageTextBlock.Text = _currentPage.ToString();
 
-            DapperDataContext dataContext = new DapperDataContext();
+            UpdateDataGrid(_pageSize * (_currentPage - 1), _pageSize);
+            DisableButtons();
+        }
 
-            List<Product>? products = dataContext.Products;
-
-            productsDataGrid.ItemsSource = products
-                .Skip(_pageSize * (_currentPage - 1))
-                .Take(_pageSize);
-
-            _totalPages = (int)Math.Ceiling(1.0 * products.Count() / _pageSize);
+        private void DisableButtons()
+        {
+            nextButton.IsEnabled = toEndButton.IsEnabled = _currentPage < _totalPages;
+            previousButton.IsEnabled = toStartButton.IsEnabled = _currentPage > 1;
         }
 
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
             _pageSize = Convert.ToInt32(pageSizeTextBlock.Text);
-
             var page = Convert.ToInt32(pageTextBlock.Text);
-            _currentPage = page == 0 ? 1 : page;
+            _currentPage = page < 1 ? 1 : page;
+            _currentPage = page > _totalPages ? _totalPages : page;
 
-            LoadData();
+            UpdateValues();
         }
 
         private void ToStartButton_Click(object sender, RoutedEventArgs e)
         {
             _currentPage = 1;
-            LoadData();
+            UpdateValues();
         }
 
         private void PreviousButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_currentPage == 1)
-            {
-                return;
-            }
-            _currentPage--; //
-            LoadData();
+            if (_currentPage <= 1) return;
+            _currentPage--;
+            UpdateValues();
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_currentPage >= _totalPages)
-            {
-                return;
-            }
-            _currentPage++; //
-            LoadData();
+            if (_currentPage >= _totalPages) return;
+            _currentPage++;
+            UpdateValues();
         }
 
         private void ToLastButton_Click(object sender, RoutedEventArgs e)
         {
             _currentPage = _totalPages;
-            LoadData();
+            UpdateValues();
         }
+        private void LoadData() => _products = new DapperDataContext().Products;
+
+        private void UpdateDataGrid(int skip, int take) => productsDataGrid.ItemsSource = _products.Skip(skip).Take(take);
     }
 }

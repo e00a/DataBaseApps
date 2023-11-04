@@ -54,10 +54,5 @@ namespace LabWork16
             Task5Window fm = new Task5Window();
             fm.Show();
         }
-
-        private void Task6Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }
