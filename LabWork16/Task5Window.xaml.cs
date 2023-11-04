@@ -19,30 +19,18 @@ namespace LabWork16
     /// </summary>
     public partial class Task5Window : Window
     {
-        
         int _pageSize = 5;
         int _currentPage = 1;
         int _totalPages = 1;
 
+        DapperDataContext _dataContext;
+        List<Product>? _products;
+
         public Task5Window()
         {
             InitializeComponent();
-            LoadData();
-            for (int i = 1; i <= _totalPages; i++)
-            {
-                Label label = new Label();
-                label.Content = i;
-                label.MouseDown += ToPageLabel_MouseDown;
-                label.Cursor = Cursors.Hand;
-                buttonsStackPanel.Children.Add(label);
-            }
-        }
 
-        private void ToPageLabel_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is not Label label) return;
-
-            _currentPage = Convert.ToInt32(label.Content);
+            _dataContext = new DapperDataContext();
             LoadData();
         }
 
@@ -51,15 +39,18 @@ namespace LabWork16
             pageSizeTextBlock.Text = _pageSize.ToString();
             pageTextBlock.Text = _currentPage.ToString();
 
-            DapperDataContext dataContext = new DapperDataContext();
+            _products = _dataContext.Products;
+            if (_products == null) return;
 
-            List<Product>? products = dataContext.Products;
-
-            productsDataGrid.ItemsSource = products
+            productsDataGrid.ItemsSource = _products
                 .Skip(_pageSize * (_currentPage - 1))
                 .Take(_pageSize);
 
-            _totalPages = (int)Math.Ceiling(1.0 * products.Count() / _pageSize);
+            _totalPages = (int)Math.Ceiling(1.0 * _products.Count() / _pageSize);
+
+            var productsCount = _products.Count;
+            var length = _currentPage * _pageSize;
+            PrintLength(length > productsCount ? productsCount : length, productsCount);
         }
 
         private void LoadButton_Click(object sender, RoutedEventArgs e)
@@ -67,50 +58,25 @@ namespace LabWork16
             _pageSize = Convert.ToInt32(pageSizeTextBlock.Text);
 
             var page = Convert.ToInt32(pageTextBlock.Text);
-            _currentPage = page == 0 ? 1 : page;
+            _currentPage = page < 1 ? 1 : page;
+            _currentPage = page > _totalPages ? _totalPages : page;
 
-            LoadData();
-        }
-
-        private void ToStartButton_Click(object sender, RoutedEventArgs e)
-        {
-            _currentPage = 1;
-            LoadData();
-        }
-
-        private void PreviousButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (_currentPage == 1)
-            {
-                return;
-            }
-            _currentPage--; //
-            LoadData();
-        }
-
-        private void NextButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (_currentPage >= _totalPages)
-            {
-                return;
-            }
-            _currentPage++; //
-            LoadData();
-        }
-
-        private void ToLastButton_Click(object sender, RoutedEventArgs e)
-        {
-            _currentPage = _totalPages;
             LoadData();
         }
 
         private void ShowMoreButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_currentPage > _totalPages) return;
+            if (_currentPage >= _totalPages) return;
             _currentPage++;
-
             LoadData();
-            statusTextBlock.Text = $"Показано  из  записей.";
+
+            productsDataGrid.ItemsSource = _products
+               .Take(_pageSize * _currentPage);
+        }
+
+        private void PrintLength(int length, int total)
+        {
+            statusTextBlock.Text = $"Показано {length} из {total} записей.";
         }
     }
 }

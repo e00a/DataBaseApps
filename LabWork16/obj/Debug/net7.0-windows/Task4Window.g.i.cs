@@ -93,7 +93,7 @@ namespace LabWork16 {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/LabWork16;V1.0.0.0;component/task4window.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/LabWork16;component/task4window.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\Task4Window.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LabWork16"
         mc:Ignorable="d"
-                Title="Task5Window" Height="600" Width="800">
+                Title="Task5Window" Height="720" Width="1280">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -24,21 +24,8 @@
     Click="LoadButton_Click"/>
         </StackPanel>
         <DataGrid x:Name="productsDataGrid"
-      Grid.Row="1"/>
-        <StackPanel Orientation="Horizontal" Grid.Row="2"
-            HorizontalAlignment="Center">
-            <Button Content="|&lt;" Click="ToStartButton_Click"/>
-            <Button Content="&lt;" Click="PreviousButton_Click"/>
-            <Button Content=">" Click="NextButton_Click"/>
-            <Button Content=">|" Click="ToLastButton_Click"/>
-        </StackPanel>
-        <StackPanel x:Name="buttonsStackPanel"
-                Orientation="Horizontal" 
-                Grid.Row="3"
-                HorizontalAlignment="Center">
-
-        </StackPanel>
-        <StackPanel Grid.Row="3"
+                    Grid.Row="1"/>
+        <StackPanel Grid.Row="4"
                     HorizontalAlignment="Center">
             <Button Content="Show more" Click="ShowMoreButton_Click"/>
             <TextBlock x:Name="statusTextBlock"/>
