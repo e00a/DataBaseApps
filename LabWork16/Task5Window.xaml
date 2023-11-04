@@ -27,7 +27,7 @@
                     Grid.Row="1"/>
         <StackPanel Grid.Row="4"
                     HorizontalAlignment="Center">
-            <Button Content="Show more" Click="ShowMoreButton_Click"/>
+            <Button x:Name="showMoreButton" Content="Show more" Click="ShowMoreButton_Click"/>
             <TextBlock x:Name="statusTextBlock"/>
         </StackPanel>
     </Grid>

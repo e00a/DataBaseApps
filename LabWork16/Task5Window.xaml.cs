@@ -23,34 +23,32 @@ namespace LabWork16
         int _currentPage = 1;
         int _totalPages = 1;
 
-        DapperDataContext _dataContext;
         List<Product>? _products;
 
         public Task5Window()
         {
             InitializeComponent();
 
-            _dataContext = new DapperDataContext();
             LoadData();
+            UpdateValues();
         }
 
-        private void LoadData()
+        private void UpdateValues()
         {
-            pageSizeTextBlock.Text = _pageSize.ToString();
-            pageTextBlock.Text = _currentPage.ToString();
-
-            _products = _dataContext.Products;
             if (_products == null) return;
 
-            productsDataGrid.ItemsSource = _products
-                .Skip(_pageSize * (_currentPage - 1))
-                .Take(_pageSize);
-
             _totalPages = (int)Math.Ceiling(1.0 * _products.Count() / _pageSize);
+
+            pageSizeTextBlock.Text = _pageSize.ToString();
+            pageTextBlock.Text = _currentPage.ToString();
+                        
+            UpdateDataGrid(_pageSize * (_currentPage - 1), _pageSize);
 
             var productsCount = _products.Count;
             var length = _currentPage * _pageSize;
             PrintLength(length > productsCount ? productsCount : length, productsCount);
+
+            UpdateShowMoreButton();
         }
 
         private void LoadButton_Click(object sender, RoutedEventArgs e)
@@ -61,22 +59,24 @@ namespace LabWork16
             _currentPage = page < 1 ? 1 : page;
             _currentPage = page > _totalPages ? _totalPages : page;
 
-            LoadData();
+            UpdateValues();
         }
 
         private void ShowMoreButton_Click(object sender, RoutedEventArgs e)
         {
             if (_currentPage >= _totalPages) return;
+
             _currentPage++;
-            LoadData();
-
-            productsDataGrid.ItemsSource = _products
-               .Take(_pageSize * _currentPage);
+            UpdateValues();
+            UpdateDataGrid(0, _pageSize * _currentPage);
         }
 
-        private void PrintLength(int length, int total)
-        {
-            statusTextBlock.Text = $"Показано {length} из {total} записей.";
-        }
+        private void LoadData() => _products = new DapperDataContext().Products;
+
+        private void UpdateDataGrid(int skip, int take) => productsDataGrid.ItemsSource = _products.Skip(skip).Take(take);
+
+        private void UpdateShowMoreButton() => showMoreButton.IsEnabled = _currentPage < _totalPages;
+
+        private void PrintLength(int length, int total) => statusTextBlock.Text = $"Показано {length} из {total} записей.";
     }
 }
