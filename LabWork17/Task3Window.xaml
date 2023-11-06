@@ -19,7 +19,8 @@
                 <RadioButton Content="по названию модели" Checked="ModelSortRadioButton_Checked"/>
             </StackPanel>
             <DataGrid x:Name="productsDataGrid"
-                Grid.Row="1"/>
+                      Grid.Row="1"
+                      CanUserAddRows="false"/>
         </Grid>
     </Grid>
 </Window>

@@ -61,10 +61,8 @@ namespace LabWork17
                             : orderedProducts.ThenBy(_sortOptions[i]);
                     }
                 }
-
                 products = orderedProducts.ToList();
             }
-
             return products;
         }
 
@@ -84,25 +82,6 @@ namespace LabWork17
             2 => p => p.ProductionYear,
             _ => throw new ArgumentException("Invalid combobox index"),
         };
-
-        private IEnumerable<Product> UpdateProducts()
-        {
-            var products = _products ?? throw new Exception("Products is null");
-            IOrderedEnumerable<Product> orderedProducts = null;
-
-            
-
-            return products;
-        }
-
-        private Func<Product, object> GetSortOptionByComboBoxText(string option) => option switch
-        {
-            "тип" => p => p.Type,
-            "цена" => p => p.Price,
-            "год выпуска" => p => p.ProductionYear,
-            _ => throw new ArgumentException("Invalid combobox index"),
-        };
-
 
         private void UpdateSort(object sender, RoutedEventArgs e)
         {

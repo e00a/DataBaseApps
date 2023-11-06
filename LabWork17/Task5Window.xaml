@@ -51,6 +51,7 @@
 
         </Grid>
         <DataGrid x:Name="productsDataGrid"
-            Grid.Row="1"/>
+                  Grid.Row="1"
+                  CanUserAddRows="false"/>
     </Grid>
 </Window>

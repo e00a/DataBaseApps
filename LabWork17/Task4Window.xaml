@@ -17,6 +17,7 @@
             <Button Content="по типу и цене" x:Name="typePriceSortButton" Click="ManufactorerTitleModelSortButton_Click"/>
         </StackPanel>
         <DataGrid x:Name="productsDataGrid"
-            Grid.Row="1"/>
+                  Grid.Row="1"
+                  CanUserAddRows="false"/>
     </Grid>
 </Window>
