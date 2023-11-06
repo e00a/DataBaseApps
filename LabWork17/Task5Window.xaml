@@ -25,7 +25,6 @@
             </Grid.RowDefinitions>
 
             <Button Click="Button_Click" Content="Enter"/>
-            <Button Grid.Column="1" Click="Button_Click_1" Content="test"/>
             <TextBlock Text="Order By Descending" Grid.Row="0" Grid.Column="2"/>
             <TextBlock Text="Sort By" Grid.Row="1"/>
             <TextBlock Text="Sort By" Grid.Row="2"/>

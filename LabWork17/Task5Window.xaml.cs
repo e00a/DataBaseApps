@@ -25,69 +25,68 @@ namespace LabWork17
             {
                 MessageBox.Show(ex.Message);
             }
-
         }
 
         private IEnumerable<Product> SortProducts()
         {
             var products = _products ?? throw new Exception("Products is null");
 
-            if (firstComboBox.SelectedIndex == 0) 
-            { 
-                products = firstCheckBox.IsChecked.Value ? products.OrderByDescending(p => p.Type).ToList() : products.OrderBy(p => p.Type).ToList();
-            }
-            else if (firstComboBox.SelectedIndex == 1)
+            var sortOptions = new List<Func<Product, object>>();
+            var descendingFlags = new List<bool>();
+
+            if (firstComboBox.SelectedIndex >= 0)
             {
-                products = firstCheckBox.IsChecked.Value ? products.OrderByDescending(p => p.Price).ToList() : products.OrderBy(p => p.Price).ToList();
+                sortOptions.Add(GetSortOptionByComboBoxIndex(firstComboBox.SelectedIndex));
+                descendingFlags.Add(firstCheckBox.IsChecked.GetValueOrDefault());
             }
-            else if (firstComboBox.SelectedIndex == 2) 
-            { 
-                products = firstCheckBox.IsChecked.Value ? products.OrderByDescending(p => p.ProductionYear).ToList() : products.OrderBy(p => p.ProductionYear).ToList();
+            if (secondComboBox.SelectedIndex >= 0)
+            {
+                sortOptions.Add(GetSortOptionByComboBoxIndex(secondComboBox.SelectedIndex));
+                descendingFlags.Add(secondCheckBox.IsChecked.GetValueOrDefault());
+            }
+            if (thirdComboBox.SelectedIndex >= 0)
+            {
+                sortOptions.Add(GetSortOptionByComboBoxIndex(thirdComboBox.SelectedIndex));
+                descendingFlags.Add(thirdCheckBox.IsChecked.GetValueOrDefault());
             }
 
-            if (secondComboBox.SelectedIndex == 0)
+            if (sortOptions.Any())
             {
-                products = secondCheckBox.IsChecked.Value ? products.OrderByDescending(p => p.Type).ToList() : products.OrderBy(p => p.Type).ToList();
-            }
-            else if (secondComboBox.SelectedIndex == 1)
-            {
-                products = secondCheckBox.IsChecked.Value ? products.OrderByDescending(p => p.Price).ToList() : products.OrderBy(p => p.Price).ToList();
-            }
-            else if (secondComboBox.SelectedIndex == 2)
-            {
-                products = secondCheckBox.IsChecked.Value ? products.OrderByDescending(p => p.ProductionYear).ToList() : products.OrderBy(p => p.ProductionYear).ToList();
-            }
+                IOrderedEnumerable<Product> orderedProducts = null;
 
-            if (thirdComboBox.SelectedIndex == 0)
-            {
-                products = thirdCheckBox.IsChecked.Value ? products.OrderByDescending(p => p.Type).ToList() : products.OrderBy(p => p.Type).ToList();
-            }
-            else if (thirdComboBox.SelectedIndex == 1)
-            {
-                products = thirdCheckBox.IsChecked.Value ? products.OrderByDescending(p => p.Price).ToList() : products.OrderBy(p => p.Price).ToList();
-            }
-            else if (thirdComboBox.SelectedIndex == 2)
-            {
-                products = thirdCheckBox.IsChecked.Value ? products.OrderByDescending(p => p.ProductionYear).ToList() : products.OrderBy(p => p.ProductionYear).ToList();
+                for (int i = 0; i < sortOptions.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        orderedProducts = descendingFlags[i]
+                            ? products.OrderByDescending(sortOptions[i])
+                            : products.OrderBy(sortOptions[i]);
+                    }
+                    else
+                    {
+                        orderedProducts = descendingFlags[i]
+                            ? orderedProducts.ThenByDescending(sortOptions[i])
+                            : orderedProducts.ThenBy(sortOptions[i]);
+                    }
+                }
+
+                products = orderedProducts.ToList();
             }
 
             return products;
-
         }
+
+        private Func<Product, object> GetSortOptionByComboBoxIndex(int index) => index switch
+        {
+            0 => p => p.Type,
+            1 => p => p.Price,
+            2 => p => p.ProductionYear,
+            _ => throw new ArgumentException("Invalid combobox index"),
+        };
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             productsDataGrid.ItemsSource = SortProducts().ToList();
-
-            var l = _products;
-            l = l.OrderBy(p => p.Type).ToList();
-            l = l.OrderByDescending(p => p.Price).ToList();
-            productsDataGrid.ItemsSource = l;
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            productsDataGrid.ItemsSource = _products.OrderBy(p => p.Type).ThenByDescending(p => p.Price).ToList(); ;
         }
     }
 }
