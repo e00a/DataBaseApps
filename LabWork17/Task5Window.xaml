@@ -24,31 +24,30 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <Button Click="Button_Click" Content="Enter"/>
             <TextBlock Text="Order By Descending" Grid.Row="0" Grid.Column="2"/>
             <TextBlock Text="Sort By" Grid.Row="1"/>
             <TextBlock Text="Sort By" Grid.Row="2"/>
             <TextBlock Text="Sort By" Grid.Row="3"/>
 
-            <ComboBox x:Name="firstComboBox" Grid.Row="1" Grid.Column="1">
+            <ComboBox x:Name="firstComboBox" Grid.Row="1" Grid.Column="1" SelectionChanged="thirdComboBox_SelectionChanged">
                 <ComboBoxItem>тип</ComboBoxItem>
                 <ComboBoxItem>цена</ComboBoxItem>
                 <ComboBoxItem>год выпуска</ComboBoxItem>
             </ComboBox>
-            <ComboBox x:Name="secondComboBox" Grid.Row="2" Grid.Column="1">
+            <ComboBox x:Name="secondComboBox" Grid.Row="2" Grid.Column="1" SelectionChanged="thirdComboBox_SelectionChanged">
                 <ComboBoxItem>тип</ComboBoxItem>
                 <ComboBoxItem>цена</ComboBoxItem>
                 <ComboBoxItem>год выпуска</ComboBoxItem>
             </ComboBox>
-            <ComboBox x:Name="thirdComboBox" Grid.Row="3" Grid.Column="1">
+            <ComboBox x:Name="thirdComboBox" Grid.Row="3" Grid.Column="1" SelectionChanged="thirdComboBox_SelectionChanged">
                 <ComboBoxItem>тип</ComboBoxItem>
                 <ComboBoxItem>цена</ComboBoxItem>
                 <ComboBoxItem>год выпуска</ComboBoxItem>
             </ComboBox>
 
-            <CheckBox HorizontalAlignment="Center" x:Name="firstCheckBox" Grid.Row="1" Grid.Column="2"/>
-            <CheckBox HorizontalAlignment="Center" x:Name="secondCheckBox" Grid.Row="2" Grid.Column="2"/>
-            <CheckBox HorizontalAlignment="Center" x:Name="thirdCheckBox" Grid.Row="3" Grid.Column="2"/>
+            <CheckBox HorizontalAlignment="Center" x:Name="firstCheckBox" Grid.Row="1" Grid.Column="2" Click="UpdateSort"/>
+            <CheckBox HorizontalAlignment="Center" x:Name="secondCheckBox" Grid.Row="2" Grid.Column="2" Click="UpdateSort"/>
+            <CheckBox HorizontalAlignment="Center" x:Name="thirdCheckBox" Grid.Row="3" Grid.Column="2" Click="UpdateSort"/>
 
         </Grid>
         <DataGrid x:Name="productsDataGrid"

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace LabWork17
 {
@@ -12,6 +14,9 @@ namespace LabWork17
     {
         ApplicationContext _context = new ApplicationContext();
         List<Product> _products;
+
+        List<Func<Product, object>> _sortOptions = new List<Func<Product, object>>();
+        List<bool> _descendingFlags = new List<bool>();
 
         public Task5Window()
         {
@@ -29,44 +34,31 @@ namespace LabWork17
 
         private IEnumerable<Product> SortProducts()
         {
-            var products = _products ?? throw new Exception("Products is null");
+            var products = _products;
+            _sortOptions.Clear();
+            _descendingFlags.Clear();
 
-            var sortOptions = new List<Func<Product, object>>();
-            var descendingFlags = new List<bool>();
+            AddSortOption(firstComboBox.SelectedIndex, firstCheckBox);
+            AddSortOption(secondComboBox.SelectedIndex, secondCheckBox);
+            AddSortOption(thirdComboBox.SelectedIndex, thirdCheckBox);
 
-            if (firstComboBox.SelectedIndex >= 0)
-            {
-                sortOptions.Add(GetSortOptionByComboBoxIndex(firstComboBox.SelectedIndex));
-                descendingFlags.Add(firstCheckBox.IsChecked.GetValueOrDefault());
-            }
-            if (secondComboBox.SelectedIndex >= 0)
-            {
-                sortOptions.Add(GetSortOptionByComboBoxIndex(secondComboBox.SelectedIndex));
-                descendingFlags.Add(secondCheckBox.IsChecked.GetValueOrDefault());
-            }
-            if (thirdComboBox.SelectedIndex >= 0)
-            {
-                sortOptions.Add(GetSortOptionByComboBoxIndex(thirdComboBox.SelectedIndex));
-                descendingFlags.Add(thirdCheckBox.IsChecked.GetValueOrDefault());
-            }
-
-            if (sortOptions.Any())
+            if (_sortOptions.Any()) 
             {
                 IOrderedEnumerable<Product> orderedProducts = null;
 
-                for (int i = 0; i < sortOptions.Count; i++)
+                for (int i = 0; i < _sortOptions.Count; i++)
                 {
                     if (i == 0)
                     {
-                        orderedProducts = descendingFlags[i]
-                            ? products.OrderByDescending(sortOptions[i])
-                            : products.OrderBy(sortOptions[i]);
+                        orderedProducts = _descendingFlags[i]
+                            ? products.OrderByDescending(_sortOptions[i])
+                            : products.OrderBy(_sortOptions[i]);
                     }
                     else
                     {
-                        orderedProducts = descendingFlags[i]
-                            ? orderedProducts.ThenByDescending(sortOptions[i])
-                            : orderedProducts.ThenBy(sortOptions[i]);
+                        orderedProducts = _descendingFlags[i]
+                            ? orderedProducts.ThenByDescending(_sortOptions[i])
+                            : orderedProducts.ThenBy(_sortOptions[i]);
                     }
                 }
 
@@ -74,6 +66,15 @@ namespace LabWork17
             }
 
             return products;
+        }
+
+        void AddSortOption(int comboBoxIndex, CheckBox checkBox)
+        {
+            if (comboBoxIndex >= 0)
+            {
+                _sortOptions.Add(GetSortOptionByComboBoxIndex(comboBoxIndex));
+                _descendingFlags.Add(checkBox.IsChecked == true);
+            }
         }
 
         private Func<Product, object> GetSortOptionByComboBoxIndex(int index) => index switch
@@ -84,9 +85,33 @@ namespace LabWork17
             _ => throw new ArgumentException("Invalid combobox index"),
         };
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private IEnumerable<Product> UpdateProducts()
         {
-            productsDataGrid.ItemsSource = SortProducts().ToList();
+            var products = _products ?? throw new Exception("Products is null");
+            IOrderedEnumerable<Product> orderedProducts = null;
+
+            
+
+            return products;
+        }
+
+        private Func<Product, object> GetSortOptionByComboBoxText(string option) => option switch
+        {
+            "тип" => p => p.Type,
+            "цена" => p => p.Price,
+            "год выпуска" => p => p.ProductionYear,
+            _ => throw new ArgumentException("Invalid combobox index"),
+        };
+
+
+        private void UpdateSort(object sender, RoutedEventArgs e)
+        {
+            productsDataGrid.ItemsSource = SortProducts();
+        }
+
+        private void thirdComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            productsDataGrid.ItemsSource = SortProducts();
         }
     }
 }
