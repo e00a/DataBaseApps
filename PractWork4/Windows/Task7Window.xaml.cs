@@ -1,6 +1,5 @@
 ﻿using PractWork4.Data;
 using PractWork4.Models;
-using System.Security.AccessControl;
 using System.Windows;
 
 namespace PractWork4.Windows
@@ -11,11 +10,13 @@ namespace PractWork4.Windows
     public partial class Task7Window : Window
     {
         public List<Manufacturer> Manufacturers { get; set; }
-        public Product? Product { get; set; }
+        public Product Product { get; set; } = new Product();
 
         public Task7Window(Product? product = null)
         {
-            Product ??= product;
+            if (product != null)
+                Product = product;
+            
             DataContext = this;
             try
             {
@@ -27,24 +28,26 @@ namespace PractWork4.Windows
                 MessageBox.Show(ex.Message);
             }
             InitializeComponent();
-            //ManufacturersComboBox.SelectedItem = Product.Manufacturer;
+            ManufacturersComboBox.SelectedItem = Manufacturers.FirstOrDefault(m=> m.ManufacturerId == Product.ManufacturerId);
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            CreateProduct();
+            if (!CheckData())
+            {
+                MessageBox.Show("Ошибка при заполнении данных");
+                return;
+            }; 
             SaveProduct();
         }
 
         private void SaveProduct()
         {
-            if (Product == null) return;
             try
             {
                 using (var context = new MarketContext())
                 {
                     context.Update(Product);
-
                     context.SaveChanges();
                 }
                 MessageBox.Show("Данные сохранены");
@@ -55,35 +58,14 @@ namespace PractWork4.Windows
             }
         }
 
-        private void CreateProduct()
+        private bool CheckData()
         {
-            if (Product != null) return;
-            
-            var model = ModelTextBox.Text;
-            var type = TypeTextBox.Text;
-            var description = DescriptionTextBox.Text;
-            if (ManufacturersComboBox.SelectedItem is null
-                || string.IsNullOrWhiteSpace(model)
-                || !decimal.TryParse(PriceTextBox.Text, out var price)
-                || !short.TryParse(ProductionYearTextBox.Text, out var productionYear)
-                || !decimal.TryParse(WeightTextBox.Text, out var weight) 
-                || !byte.TryParse(QuantityTextBox.Text, out var quantity)
-                )
-            {
-                MessageBox.Show("Ошибка при заполнении данных");
-                return;
-            }
-            var manufacturer = ManufacturersComboBox.SelectedItem as Manufacturer;
-
-            Product ??= new Product();
-            Product.Model = model;
-            Product.Price = price;
-            Product.Manufacturer = manufacturer;
-            Product.Type = type;
-            Product.Weight = weight;
-            Product.Quantity = quantity;
-            Product.ProductionYear = productionYear;
-            Product.Description = description;
+            return ManufacturersComboBox.SelectedItem is not null
+            && !string.IsNullOrWhiteSpace(ModelTextBox.Text)
+            && decimal.TryParse(PriceTextBox.Text, out _)
+            && short.TryParse(ProductionYearTextBox.Text, out _)
+            && decimal.TryParse(WeightTextBox.Text, out _)
+            && byte.TryParse(QuantityTextBox.Text, out _);
         }
     }
 }

@@ -18,24 +18,24 @@
          <!--SelectedItem="{Binding Product.Manufacturer}"-->
         
         <TextBlock Text="Model" />
-        <TextBox Text="{Binding Product.Model}" x:Name="ModelTextBox"/>
+        <TextBox Text="{Binding Product.Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="ModelTextBox"/>
         <TextBlock Text="Price"/>
-        <TextBox Text="{Binding Product.Price}" x:Name="PriceTextBox"/>
+        <TextBox Text="{Binding Product.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="PriceTextBox"/>
 
         <Label Content="Год" />
-        <TextBox Text="{Binding Product.ProductionYear}" x:Name="ProductionYearTextBox" />
+        <TextBox Text="{Binding Product.ProductionYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="ProductionYearTextBox" />
 
         <Label Content="Тип" />
-        <TextBox Text="{Binding Product.Type}" x:Name="TypeTextBox" />
+        <TextBox Text="{Binding Product.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="TypeTextBox" />
 
         <Label Content="Вес" />
-        <TextBox Text="{Binding Product.Weight}" x:Name="WeightTextBox" />
+        <TextBox Text="{Binding Product.Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="WeightTextBox" />
 
         <Label  Content="Описание" />
-        <TextBox Text="{Binding Product.Description}" x:Name="DescriptionTextBox" />
+        <TextBox Text="{Binding Product.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="DescriptionTextBox" />
 
         <Label Content="Количество" />
-        <TextBox Text="{Binding Product.Quantity}" x:Name="QuantityTextBox" />
+        <TextBox Text="{Binding Product.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="QuantityTextBox" />
 
         <Button Content="Save" Click="SaveButton_Click"/>
     </StackPanel>

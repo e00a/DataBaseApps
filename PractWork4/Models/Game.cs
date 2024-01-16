@@ -23,7 +23,7 @@ public partial class Game
     public string? ImageFileName
     {
         get { return imageFileName; }
-       set
+        set
         {
             imageFileName = value;
         }
@@ -38,23 +38,11 @@ public partial class Game
         }
     }
 
-    public SolidColorBrush BackgroundColor
-    {
-        get
-        {
-            if (Price < 500)
-            {
-                return new SolidColorBrush(Color.FromRgb(196, 255, 233));
-            }
-            else
-            {
-                return new SolidColorBrush(Color.FromRgb(255, 255, 255));
-            }
-        }
-    }
+    public SolidColorBrush BackgroundColor =>
+        new SolidColorBrush(Price < 500 ? Color.FromRgb(196, 255, 233) : Color.FromRgb(255, 255, 255));
 
-    public string? CompositeProperty 
-        => $"Количество ключей: {KeysCount}; Игра в наличии: {IsDeleted}; {Category?.Name}";
+    public string? CompositeProperty
+        => $"Количество ключей: {KeysCount}\nИгра в наличии: {(KeysCount > 0 ? "да" : "нет")}\n{Category?.Name}";
 
     public virtual Category Category { get; set; } = null!;
 }

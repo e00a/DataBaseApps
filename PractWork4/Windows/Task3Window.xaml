@@ -23,11 +23,11 @@
                                         BorderThickness="1" 
                                         CornerRadius="10"
                                         >
-                                        <Grid Width="300">
+                                        <Grid Width="500">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="50"/>
-                                                <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="60"/>
                                             <ColumnDefinition Width="60"/>
                                         </Grid.ColumnDefinitions>

@@ -13,14 +13,14 @@
                 IsReadOnly="True"
                 AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Category" Binding="{Binding Type}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer.Title}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Model" Binding="{Binding Model}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Price" Binding="{Binding Price}" IsReadOnly="True"/>
-                    <DataGridTemplateColumn Header="Edit">
+                    <DataGridTextColumn Header="тип" Binding="{Binding Type}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="производитель" Binding="{Binding Manufacturer.Title}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="модель" Binding="{Binding Model}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="цена" Binding="{Binding Price}" IsReadOnly="True"/>
+                    <DataGridTemplateColumn >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Edit" Click="EditButton_Click"/>
+                                <Button Content="изменить" Click="EditButton_Click"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
